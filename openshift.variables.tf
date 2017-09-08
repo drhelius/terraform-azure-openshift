@@ -1,0 +1,13 @@
+variable "resource_group_name" {}
+variable "node_count" {}
+variable "os_image_publisher" {}
+variable "os_image_offer" {}
+variable "os_image_sku" {}
+variable "os_image_version" {}
+variable "node_vm_size" {}
+variable "master_vm_size" {}
+variable "infra_vm_size" {}
+variable "bastion_vm_size" {}
+variable "admin_user" {}
+variable "admin_password" {}
+variable "admin_sshcert" {}
