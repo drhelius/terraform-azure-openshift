@@ -53,7 +53,7 @@ resource "azurerm_network_security_rule" "master-8443" {
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
-  source_port_range           = 8443
+  source_port_range           = "*"
   destination_port_range      = 8443
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
@@ -119,7 +119,7 @@ resource "azurerm_virtual_machine" "master" {
     disable_password_authentication = true
     ssh_keys {
       path = "/home/${var.admin_user}/.ssh/authorized_keys"
-      key_data = "${var.admin_sshcert}"
+      key_data = "${file("${path.module}/../certs/openshift.pub")}"
     }
   }
 }

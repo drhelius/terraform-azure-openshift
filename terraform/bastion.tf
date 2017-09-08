@@ -30,8 +30,8 @@ resource "azurerm_network_security_rule" "bastion-ssh" {
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = 22
+  protocol                    = "TCP"
+  source_port_range           = "*"
   destination_port_range      = 22
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
@@ -73,7 +73,18 @@ resource "azurerm_virtual_machine" "bastion" {
     disable_password_authentication = true
     ssh_keys {
       path = "/home/${var.admin_user}/.ssh/authorized_keys"
-      key_data = "${var.admin_sshcert}"
+      key_data = "${file("${path.module}/../certs/bastion.pub")}"
+    }
+  }
+
+  provisioner "remote-exec" {
+    script = "${path.module}/provision/bastion.sh"
+
+    connection {
+      type        = "ssh"
+      host        = "${azurerm_public_ip.bastion.ip_address}"
+      user        = "${var.admin_user}"
+      private_key = "${file("${path.module}/../certs/bastion.key")}"
     }
   }
 }

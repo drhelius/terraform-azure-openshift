@@ -62,7 +62,7 @@ resource "azurerm_virtual_machine" "node" {
     disable_password_authentication = true
     ssh_keys {
       path = "/home/${var.admin_user}/.ssh/authorized_keys"
-      key_data = "${var.admin_sshcert}"
+      key_data = "${file("${path.module}/../certs/openshift.pub")}"
     }
   }
 }
