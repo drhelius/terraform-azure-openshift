@@ -7,3 +7,6 @@
 
 # Sensitive data
 azure.auto.tfvars
+
+# Terraform plan
+openshift.plan
