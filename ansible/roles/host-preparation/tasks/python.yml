@@ -1,5 +1,5 @@
 ---
-- name: Install python packages
+- name: Ensure python packages are installed
   pip:
     name: "{{ item }}"
     state: present

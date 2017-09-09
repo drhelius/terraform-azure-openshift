@@ -1,1 +1,27 @@
 ---
+- name: Ensure Docker is installed
+  yum:
+    name: "docker-1.12.6"
+    state: present
+    enablerepo: "epel"
+
+- name: Ensure Docker is properly configured
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^OPTIONS='
+    line: 'OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"'
+
+- name: Ensure vpn config is in place
+  copy:
+    src: "files/docker-storage-setup"
+    dest: "/etc/sysconfig/docker-storage-setup"
+
+- name: Ensure Docker is using the right storage device
+  shell: "docker-storage-setup"
+  changed_when: false
+
+- name: Ensure Docker service is enabled and restarted
+  service:
+    name: docker
+    enabled: yes
+    state: restarted

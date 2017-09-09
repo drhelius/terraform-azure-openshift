@@ -1,5 +1,5 @@
 ---
-- name: Install required packages
+- name: Ensure all required packages are installed
   yum:
     name: "{{ item }}"
     state: present
