@@ -1,0 +1,8 @@
+[masters]
+master[0:2]
+
+[infra]
+infra[0:2]
+
+[nodes]
+node[0:###NODE_COUNT###]

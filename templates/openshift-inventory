@@ -1,0 +1,31 @@
+# Create an OSEv3 group that contains the masters and nodes groups
+[OSEv3:children]
+masters
+nodes
+
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+# SSH user, this user should allow ssh based auth without requiring a password
+ansible_ssh_user=nacho
+
+# If ansible_ssh_user is not root, ansible_become must be set to true
+ansible_become=true
+
+openshift_deployment_type=origin
+openshift_disable_check=disk_availability,memory_availability,docker_storage
+openshift_master_named_certificates=[{"certfile": "/home/nacho/ssl/config/live/openshift.gq/fullchain.pem", "keyfile": "/home/nacho/ssl/config/live/openshift.gq/privkey.pem"}]
+openshift_master_overwrite_named_certificates=true
+
+# host group for masters
+[masters]
+master01 openshift_public_hostname=openshift.gq
+
+# host group for etcd
+[etcd]
+master01
+
+# host group for nodes, includes region info
+[nodes]
+master01 openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
+node01 openshift_node_labels="{'region': 'pre'}"
+node02 openshift_node_labels="{'region': 'pro'}"

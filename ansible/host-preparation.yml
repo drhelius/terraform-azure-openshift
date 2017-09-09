@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - host-preparation
+    - docker

@@ -1,0 +1,7 @@
+---
+- name: Install required packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    enablerepo: "epel"
+  with_items: "{{ yum_packages }}"
