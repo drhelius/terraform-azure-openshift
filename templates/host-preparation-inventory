@@ -1,8 +1,8 @@
 [masters]
-master[0:2]
+master[0:2] ansible_user=###ADMIN_USER###
 
 [infra]
-infra[0:2]
+infra[0:2] ansible_user=###ADMIN_USER###
 
 [nodes]
-node[0:###NODE_COUNT###]
+node[0:###NODE_COUNT###] ansible_user=###ADMIN_USER###

@@ -14,9 +14,10 @@ git pull
 
 cp -f templates/host-preparation-inventory ansible/inventory/hosts
 sed -i -e 's/###NODE_COUNT###/$NODE_COUNT/g' ansible/inventory/hosts
+sed -i -e 's/###ADMIN_USER###/$ADMIN_USER/g' ansible/inventory/hosts
 
 cd ansible
-ansible-playbook -i inventory/hosts host-prepartion.yml
+ansible-playbook -i inventory/hosts host-preparation.yml
 cd ../..
 
 if [ ! -d "openshift-ansible" ]; then
