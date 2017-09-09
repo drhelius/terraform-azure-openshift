@@ -20,7 +20,7 @@ azure_subscription_id = "xxxxxx-xx-xx-xx-xxxxxxx"
 azure_location = "West Europe"
 ```
 
-Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, the number of compute nodes, the size of the VMs and the credentials used in all the machines:
+Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, the number of App nodes, the size of the VMs and the credentials used in all the machines:
 
 ```
 resource_group_name = "openshift"
