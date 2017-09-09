@@ -12,6 +12,7 @@ fi
 cd terraform-azure-openshift
 git pull
 
+chmod 600 certs/*
 cp -f templates/host-preparation-inventory ansible/inventory/hosts
 sed -i "s/###NODE_COUNT###/$NODE_COUNT/g" ansible/inventory/hosts
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" ansible/inventory/hosts
