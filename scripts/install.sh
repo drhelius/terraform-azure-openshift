@@ -14,7 +14,8 @@ git pull
 
 chmod 600 certs/*
 cp -f templates/host-preparation-inventory ansible/inventory/hosts
-sed -i "s/###NODE_COUNT###/$NODE_COUNT/g" ansible/inventory/hosts
+NODE_MAX_INDEX=$((NODE_COUNT-1))
+sed -i "s/###NODE_COUNT###/$NODE_MAX_INDEX/g" ansible/inventory/hosts
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" ansible/inventory/hosts
 
 cd ansible
