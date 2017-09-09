@@ -1,0 +1,8 @@
+resource_group_name = "openshift"
+node_count = "2"
+node_vm_size = "Standard_A2m_v2"
+master_vm_size = "Standard_A2m_v2"
+infra_vm_size = "Standard_A2m_v2"
+bastion_vm_size = "Standard_A2"
+admin_user = "openshift"
+admin_password = "OpenShift*36"

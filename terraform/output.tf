@@ -9,3 +9,11 @@ output "console_public_ip" {
 output "service_public_ip" {
   value = "${azurerm_public_ip.infra.ip_address}"
 }
+
+output "node_count" {
+  value = "${var.node_count}"
+}
+
+output "admin_user" {
+  value = "${var.admin_user}"
+}
