@@ -30,25 +30,25 @@
 - name: Use /dev/sda for Docker
   set_fact:
     block_device: "/dev/sda"
-  when: sda1.stat.isdir is defined
+  when: sda1.stat.isdir is not defined
   changed_when: false
 
 - name: Use /dev/sdb for Docker
   set_fact:
     block_device: "/dev/sdb"
-  when: sdb1.stat.isdir is defined
+  when: sdb1.stat.isdir is not defined
   changed_when: false
 
 - name: Use /dev/sdc for Docker
   set_fact:
     block_device: "/dev/sdc"
-  when: sdc1.stat.isdir is defined
+  when: sdc1.stat.isdir is not defined
   changed_when: false
 
 - name: Ensure Docker storage config is in place
   template:
-    src: "docker-storage-setup.j2"
-    dest: "/etc/sysconfig/docker-storage-setup"
+    src: docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
 
 - name: Ensure Docker is using the right storage device
   shell: "docker-storage-setup"
