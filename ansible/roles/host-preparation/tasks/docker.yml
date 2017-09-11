@@ -11,9 +11,43 @@
     regexp: '^OPTIONS='
     line: 'OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"'
 
-- name: Ensure vpn config is in place
-  copy:
-    src: "files/docker-storage-setup"
+
+- name: Check if /dev/sda is unpartitioned
+  stat:
+    path: /dev/sda1
+  register: sda1
+
+- name: Check if /dev/sdb is unpartitioned
+  stat:
+    path: /dev/sdb1
+  register: sdb1
+
+- name: Check if /dev/sdc is unpartitioned
+  stat:
+    path: /dev/sdc1
+  register: sdc1
+
+- name: Use /dev/sda for Docker
+  set_fact:
+    block_device: "/dev/sda"
+  when: sda1.stat.isdir is defined
+  changed_when: false
+
+- name: Use /dev/sdb for Docker
+  set_fact:
+    block_device: "/dev/sdb"
+  when: sdb1.stat.isdir is defined
+  changed_when: false
+
+- name: Use /dev/sdc for Docker
+  set_fact:
+    block_device: "/dev/sdc"
+  when: sdc1.stat.isdir is defined
+  changed_when: false
+
+- name: Ensure Docker storage config is in place
+  template:
+    src: "docker-storage-setup.j2"
     dest: "/etc/sysconfig/docker-storage-setup"
 
 - name: Ensure Docker is using the right storage device

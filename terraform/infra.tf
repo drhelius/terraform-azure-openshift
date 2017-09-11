@@ -124,14 +124,14 @@ resource "azurerm_virtual_machine" "infra" {
   }
 
   storage_os_disk {
-    name              = "openshift-infra-vm-os-disk-${count.index}"
+    name              = "openshift-infrastructure-vm-os-disk-${count.index}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "openshift-infra-vm-data-disk-${count.index}"
+    name              = "openshift-infrastructure-vm-data-disk-${count.index}"
     create_option     = "Empty"
     managed_disk_type = "Standard_LRS"
     lun               = 0
