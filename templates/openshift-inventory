@@ -10,18 +10,28 @@ ansible_ssh_user=###ADMIN_USER###
 ansible_become=true
 
 openshift_deployment_type=origin
+
+openshift_disable_check=disk_availability,memory_availability
+openshift_override_hostname_check=true
+
 #openshift_master_named_certificates=[{"certfile": "/home/nacho/ssl/config/live/openshift.gq/fullchain.pem", "keyfile": "/home/nacho/ssl/config/live/openshift.gq/privkey.pem"}]
 #openshift_master_overwrite_named_certificates=true
 
 openshift_hosted_router_replicas=3
 openshift_hosted_registry_replicas=3
-openshift_override_hostname_check=true
+openshift_router_selector='role=infra'
+openshift_registry_selector='role=infra'
+osm_default_node_selector="role=app"
+
+osm_cluster_network_cidr="10.128.0.0/14"
+osm_host_subnet_length=9
+openshift_portal_net="172.30.0.0/16"
 
 [masters]
 master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role': 'master'}"
 
 [etcd]
-master[0:2]
+master[0:2] openshift_hostname=master[0:2]
 
 [new_nodes]
 
