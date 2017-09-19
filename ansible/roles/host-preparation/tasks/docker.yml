@@ -11,7 +11,6 @@
     regexp: '^OPTIONS='
     line: 'OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"'
 
-
 - name: Check if /dev/sda is unpartitioned
   stat:
     path: /dev/sda1

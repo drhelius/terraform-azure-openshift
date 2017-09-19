@@ -1,31 +1,33 @@
-# Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
 masters
 nodes
+etcd
+new_nodes
+new_masters
 
-# Set variables common for all OSEv3 hosts
 [OSEv3:vars]
-# SSH user, this user should allow ssh based auth without requiring a password
-ansible_ssh_user=nacho
-
-# If ansible_ssh_user is not root, ansible_become must be set to true
+ansible_ssh_user=###ADMIN_USER###
 ansible_become=true
 
 openshift_deployment_type=origin
-openshift_disable_check=disk_availability,memory_availability,docker_storage
-openshift_master_named_certificates=[{"certfile": "/home/nacho/ssl/config/live/openshift.gq/fullchain.pem", "keyfile": "/home/nacho/ssl/config/live/openshift.gq/privkey.pem"}]
-openshift_master_overwrite_named_certificates=true
+#openshift_master_named_certificates=[{"certfile": "/home/nacho/ssl/config/live/openshift.gq/fullchain.pem", "keyfile": "/home/nacho/ssl/config/live/openshift.gq/privkey.pem"}]
+#openshift_master_overwrite_named_certificates=true
 
-# host group for masters
+openshift_hosted_router_replicas=3
+openshift_hosted_registry_replicas=3
+openshift_override_hostname_check=true
+
 [masters]
-master01 openshift_public_hostname=openshift.gq
+master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role': 'master'}"
 
-# host group for etcd
 [etcd]
-master01
+master[0:2]
 
-# host group for nodes, includes region info
+[new_nodes]
+
+[new_masters]
+
 [nodes]
-master01 openshift_node_labels="{'region': 'infra'}" openshift_schedulable=true
-node01 openshift_node_labels="{'region': 'pre'}"
-node02 openshift_node_labels="{'region': 'pro'}"
+master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
+infra[0:2] openshift_hostname=infra[0:2] openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
+node[0:###NODE_COUNT###] openshift_hostname=node[0:###NODE_COUNT###] openshift_node_labels="{'role':'app','zone':'default','logging':'true'}"

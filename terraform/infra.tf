@@ -100,13 +100,6 @@ resource "azurerm_network_interface" "infra" {
   }
 }
 
-resource "azurerm_storage_share" "infra" {
-  name                 = "openshift-infrastructure-file-share"
-  resource_group_name  = "${azurerm_resource_group.openshift.name}"
-  storage_account_name = "${azurerm_storage_account.openshift.name}"
-  quota = 50
-}
-
 resource "azurerm_virtual_machine" "infra" {
   count                 = 3
   name                  = "openshift-infrastructure-vm-${count.index}"
