@@ -32,8 +32,13 @@ cd openshift-ansible
 git pull
 cp -f ../terraform-azure-openshift/certs/openshift.key openshift.key
 cp -f ../terraform-azure-openshift/templates/openshift-inventory openshift-inventory
-NODE_MAX_INDEX=$((NODE_COUNT-1))
-sed -i "s/###NODE_COUNT###/$NODE_MAX_INDEX/g" openshift-inventory
+
+INDEX=0
+while [ $INDEX -lt $NODE_COUNT ]; do
+  printf "node$INDEX openshift_hostname=node$INDEX openshift_node_labels=\"{'role':'app','zone':'default','logging':'true'}\"\n" >> openshift-inventory
+  let INDEX=INDEX+1
+done
+
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" openshift-inventory
 ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/byo/config.yml
 cd ..

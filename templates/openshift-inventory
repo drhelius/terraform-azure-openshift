@@ -29,16 +29,22 @@ openshift_portal_net="172.30.0.0/16"
 openshift_use_dnsmasq=true
 
 [masters]
-master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role': 'master'}"
+master0 openshift_hostname=master0 openshift_node_labels="{'role': 'master'}"
+master1 openshift_hostname=master1 openshift_node_labels="{'role': 'master'}"
+master2 openshift_hostname=master2 openshift_node_labels="{'role': 'master'}"
 
 [etcd]
-master[0:2] openshift_hostname=master[0:2]
+master0 openshift_hostname=master0
+master1 openshift_hostname=master1
+master2 openshift_hostname=master2
 
 [new_nodes]
-
 [new_masters]
 
 [nodes]
-master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
-infra[0:2] openshift_hostname=infra[0:2] openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
-node[0:###NODE_COUNT###] openshift_hostname=node[0:###NODE_COUNT###] openshift_node_labels="{'role':'app','zone':'default','logging':'true'}"
+master0 openshift_hostname=master0 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
+master1 openshift_hostname=master1 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
+master2 openshift_hostname=master2 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
+infra0 openshift_hostname=infra0 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
+infra1 openshift_hostname=infra1 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
+infra2 openshift_hostname=infra2 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
