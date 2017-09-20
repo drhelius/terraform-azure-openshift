@@ -10,3 +10,4 @@ variable "infra_vm_size" {}
 variable "bastion_vm_size" {}
 variable "admin_user" {}
 variable "admin_password" {}
+variable "master_domain" {}
