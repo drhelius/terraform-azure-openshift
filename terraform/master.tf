@@ -69,9 +69,10 @@ resource "azurerm_network_interface" "master" {
   network_security_group_id = "${azurerm_network_security_group.master.id}"
 
   ip_configuration {
-    name                          = "default"
-    subnet_id                     = "${azurerm_subnet.master.id}"
-    private_ip_address_allocation = "dynamic"
+    name                                    = "default"
+    subnet_id                               = "${azurerm_subnet.master.id}"
+    private_ip_address_allocation           = "dynamic"
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.master.id}"]
   }
 }
 

@@ -94,9 +94,10 @@ resource "azurerm_network_interface" "infra" {
   network_security_group_id = "${azurerm_network_security_group.infra.id}"
 
   ip_configuration {
-    name                          = "default"
-    subnet_id                     = "${azurerm_subnet.infra.id}"
-    private_ip_address_allocation = "dynamic"
+    name                                    = "default"
+    subnet_id                               = "${azurerm_subnet.infra.id}"
+    private_ip_address_allocation           = "dynamic"
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.infra.id}"]
   }
 }
 
