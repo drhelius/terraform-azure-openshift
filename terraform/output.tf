@@ -17,3 +17,7 @@ output "node_count" {
 output "admin_user" {
   value = "${var.admin_user}"
 }
+
+output "master_domain" {
+  value = "${var.master_domain}"
+}

@@ -18,6 +18,7 @@ SERVICE_IP=$(terraform output service_public_ip)
 CONSOLE_IP=$(terraform output console_public_ip)
 NODE_COUNT=$(terraform output node_count)
 ADMIN_USER=$(terraform output admin_user)
+MASTER_DOMAIN=$(terraform output master_domain)
 
 cd ..
 
@@ -28,7 +29,7 @@ echo "Transfering install script to bastion server..."
 scp -o StrictHostKeychecking=no -i certs/bastion.key scripts/install.sh $ADMIN_USER@$BASTION_IP:/home/openshift/install.sh
 
 echo "Running install script on bastion server..."
-ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $ADMIN_USER
+ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $ADMIN_USER $MASTER_DOMAIN
 
 echo "Finished!!"
 echo "Console: https://$CONSOLE_IP:8443"

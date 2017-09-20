@@ -29,14 +29,14 @@ openshift_portal_net="172.30.0.0/16"
 openshift_use_dnsmasq=true
 
 [masters]
-master0 openshift_hostname=master0 openshift_node_labels="{'role': 'master'}"
-master1 openshift_hostname=master1 openshift_node_labels="{'role': 'master'}"
-master2 openshift_hostname=master2 openshift_node_labels="{'role': 'master'}"
+master0 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
+master1 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
+master2 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
 
 [etcd]
-master0 openshift_hostname=master0
-master1 openshift_hostname=master1
-master2 openshift_hostname=master2
+master0
+master1
+master2
 
 [new_nodes]
 [new_masters]
