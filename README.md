@@ -41,6 +41,8 @@ Simply run:
 ```
 You will get as an output the public IPs for the Bastion host and for both the External Load Balancer and the Router Load Balancer.
 
+In order to SSH into the Bastion host use the key in the ```certs``` folder.
+
 License
 -------
 MIT License
