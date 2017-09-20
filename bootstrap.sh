@@ -31,6 +31,6 @@ echo "Running install script on bastion server..."
 ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $ADMIN_USER
 
 echo "Finished!!"
-echo "Console: https://$BASTION_IP:8443"
-echo "Bastion: $CONSOLE_IP"
+echo "Console: https://$CONSOLE_IP:8443"
+echo "Bastion: ssh -i certs/bastion.key $ADMIN_USER@$BASTION_IP"
 echo "Router: $SERVICE_IP"
