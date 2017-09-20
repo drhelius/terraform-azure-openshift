@@ -12,17 +12,12 @@ terraform plan -out openshift.plan -var-file=../azure.tfvars -var-file=../bootst
 echo "Deploying Terraform plan..."
 terraform apply openshift.plan
 
-echo "Getting the public IP for bastion server..."
+echo "Getting output variables..."
 BASTION_IP=$(terraform output bastion_public_ip)
-echo "--> $BASTION_IP"
-
-echo "Getting the selected node count..."
+SERVICE_IP=$(terraform output service_public_ip)
+CONSOLE_IP=$(terraform output console_public_ip)
 NODE_COUNT=$(terraform output node_count)
-echo "--> $NODE_COUNT"
-
-echo "Getting the admin user name..."
 ADMIN_USER=$(terraform output admin_user)
-echo "--> $ADMIN_USER"
 
 cd ..
 
@@ -34,3 +29,8 @@ scp -o StrictHostKeychecking=no -i certs/bastion.key scripts/install.sh $ADMIN_U
 
 echo "Running install script on bastion server..."
 ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $ADMIN_USER
+
+echo "Finished!!"
+echo "Console: https://$BASTION_IP:8443"
+echo "Bastion: $CONSOLE_IP"
+echo "Router: $SERVICE_IP"
