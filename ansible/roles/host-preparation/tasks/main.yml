@@ -14,6 +14,12 @@
 - name: Ensure Docker is properly installed
   include: docker.yml
 
+- name: Ensure /etc/origin/node exists
+  file:
+    path: /etc/origin/node
+    state: directory
+    recurse: yes
+
 - name: Ensure /etc/origin/node/resolv.conf exists
   file:
     path: /etc/origin/node/resolv.conf
