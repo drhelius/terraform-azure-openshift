@@ -39,6 +39,7 @@ Simply run:
 ```
 ./bootstrap.sh
 ```
+You will get as an output the public IPs for the Bastion host and for both the External Load Balancer and the Router Load Balancer.
 
 License
 -------
