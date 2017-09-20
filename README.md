@@ -34,7 +34,7 @@ admin_password = "xxxxxxxx"
 master_domain = "master.mydomain.com"
 ```
 
-### Run
+### Bootstrap
 
 Simply run:
 ```
