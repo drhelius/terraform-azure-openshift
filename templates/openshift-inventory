@@ -26,6 +26,7 @@ osm_default_node_selector="role=app"
 osm_cluster_network_cidr="10.128.0.0/14"
 osm_host_subnet_length=9
 openshift_portal_net="172.30.0.0/16"
+openshift_use_dnsmasq=true
 
 [masters]
 master[0:2] openshift_hostname=master[0:2] openshift_node_labels="{'role': 'master'}"
