@@ -13,3 +13,8 @@
 
 - name: Ensure Docker is properly installed
   include: docker.yml
+
+- name: Ensure /etc/origin/node/resolv.conf exists
+  file:
+    path: /etc/origin/node/resolv.conf
+    state: touch
