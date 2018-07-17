@@ -22,11 +22,13 @@ MASTER_DOMAIN=$(terraform output master_domain)
 
 cd ..
 
+chmod 600 certs/*
+
 echo "Transfering private key to bastion server..."
-scp -o StrictHostKeychecking=no -i certs/bastion.key certs/openshift.key $ADMIN_USER@$BASTION_IP:/home/openshift/.ssh/id_rsa
+scp -o StrictHostKeychecking=no -i certs/bastion.key certs/openshift.key $ADMIN_USER@$BASTION_IP:/home/$ADMIN_USER/.ssh/id_rsa
 
 echo "Transfering install script to bastion server..."
-scp -o StrictHostKeychecking=no -i certs/bastion.key scripts/install.sh $ADMIN_USER@$BASTION_IP:/home/openshift/install.sh
+scp -o StrictHostKeychecking=no -i certs/bastion.key scripts/install.sh $ADMIN_USER@$BASTION_IP:/home/$ADMIN_USER/install.sh
 
 echo "Running install script on bastion server..."
 ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $ADMIN_USER $MASTER_DOMAIN
