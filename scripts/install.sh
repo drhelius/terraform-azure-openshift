@@ -7,7 +7,7 @@ MASTER_DOMAIN=$3
 
 if [ ! -d "terraform-azure-openshift" ]; then
     echo "Cloning terraform-azure-openshift Github repo..."
-    git clone https://github.com/drhelius/terraform-azure-openshift.git
+    git clone https://github.com/drhelius/terraform-azure-openshift
 fi
 
 cd terraform-azure-openshift
@@ -26,7 +26,8 @@ cd ../..
 
 if [ ! -d "openshift-ansible" ]; then
     echo "Cloning openshift-ansible Github repo..."
-    git clone https://github.com/openshift/openshift-ansible.git
+    git clone https://github.com/openshift/openshift-ansible
+    git checkout release-3.9
 fi
 
 cd openshift-ansible
@@ -36,13 +37,15 @@ cp -f ../terraform-azure-openshift/templates/openshift-inventory openshift-inven
 
 INDEX=0
 while [ $INDEX -lt $NODE_COUNT ]; do
-  printf "node$INDEX openshift_hostname=node$INDEX openshift_node_labels=\"{'role':'app','zone':'default','logging':'true'}\"\n" >> openshift-inventory
+  printf "node$INDEX openshift_node_labels=\"{'role':'apps', 'logging':'true'}\"\n" >> openshift-inventory
   let INDEX=INDEX+1
 done
 
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" openshift-inventory
 sed -i "s/###MASTER_DOMAIN###/$MASTER_DOMAIN/g" openshift-inventory
-ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/byo/config.yml
+ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/prerequisites.yml
+ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/deploy_cluster.yml
+
 cd ..
 
 rm install.sh

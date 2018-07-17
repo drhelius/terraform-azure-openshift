@@ -1,37 +1,34 @@
 terraform-azure-openshift
 =========================
 
-[OpenShift Reference Architecture](https://access.redhat.com/documentation/en-us/reference_architectures/2017/html-single/deploying_red_hat_openshift_container_platform_3.5_on_microsoft_azure/) implementation on Azure using Terraform. 
+[OpenShift Reference Architecture](https://blog.openshift.com/openshift-container-platform-reference-architecture-implementation-guides/) implementation on Azure using Terraform.
 
 Follow me on Twitter for updates: http://twitter.com/drhelius
 
-![OpenShift Azure](https://blog.openshift.com/wp-content/uploads/refarch-ocp-on-azure-v3.png)
+![OpenShift Azure](https://blog.openshift.com/wp-content/uploads/refarch-ocp-on-azure-v6.png)
 
 Bootstraping
 ------------
 ### Setup
-Fill in the variables in ```azure.tfvars``` by following the [Terraform docs](https://www.terraform.io/docs/providers/azurerm/index.html#creating-credentials):
-
-```
-azure_client_id = "xxxxxx-xx-xx-xx-xxxxxxx"  
-azure_tenant_id = "xxxxxx-xx-xx-xx-xxxxxxx"  
-azure_client_secret = "xxxx"  
-azure_subscription_id = "xxxxxx-xx-xx-xx-xxxxxxx"
-azure_location = "West Europe"
-```
+Log in into Azure using Azure cli.
 
 Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, the number of App nodes, the size of the VMs, the credentials used in the VMs and the domain or subdomain that will be associated with the OpenShift console:
 
 ```
-resource_group_name = "openshift"
-node_count = "2"
-node_vm_size = "Standard_A2m_v2"
-master_vm_size = "Standard_A2m_v2"
-infra_vm_size = "Standard_A2m_v2"
-bastion_vm_size = "Standard_A2"
-admin_user = "openshift"
-admin_password = "xxxxxxxx"
-master_domain = "master.mydomain.com"
+azure_location = "East US"
+azure_resource_group_name = "openshift"
+openshift_node_count = "2"
+openshift_node_vm_size = "Standard_A2m_v2"
+openshift_master_vm_size = "Standard_A2m_v2"
+openshift_infra_vm_size = "Standard_A2m_v2"
+openshift_bastion_vm_size = "Standard_A2"
+openshift_master_domain = "openshift.mydomain.com"
+openshift_os_image_publisher = "OpenLogic"
+openshift_os_image_offer = "CentOS"
+openshift_os_image_sku = "7.5"
+openshift_os_image_version = "latest"
+openshift_vm_admin_user = "openshift"
+openshift_vm_admin_password = "xxxxxxxx"
 ```
 
 ### Bootstrap

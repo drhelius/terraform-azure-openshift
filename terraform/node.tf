@@ -1,5 +1,5 @@
 resource "azurerm_network_interface" "node" {
-  count               = "${var.node_count}"
+  count               = "${var.openshift_node_count}"
   name                = "openshift-node-nic-${count.index}"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
@@ -12,7 +12,7 @@ resource "azurerm_network_interface" "node" {
 }
 
 resource "azurerm_storage_container" "node" {
-  count                 = "${var.node_count}"
+  count                 = "${var.openshift_node_count}"
   name                  = "node-${count.index}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
   storage_account_name  = "${azurerm_storage_account.openshift.name}"
@@ -20,18 +20,18 @@ resource "azurerm_storage_container" "node" {
 }
 
 resource "azurerm_virtual_machine" "node" {
-  count                 = "${var.node_count}"
+  count                 = "${var.openshift_node_count}"
   name                  = "openshift-node-vm-${count.index}"
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
   network_interface_ids = ["${element(azurerm_network_interface.node.*.id, count.index)}"]
-  vm_size               = "${var.node_vm_size}"
+  vm_size               = "${var.openshift_node_vm_size}"
 
   storage_image_reference {
-    publisher = "${var.os_image_publisher}"
-    offer     = "${var.os_image_offer}"
-    sku       = "${var.os_image_sku}"
-    version   = "${var.os_image_version}"
+    publisher = "${var.openshift_os_image_publisher}"
+    offer     = "${var.openshift_os_image_offer}"
+    sku       = "${var.openshift_os_image_sku}"
+    version   = "${var.openshift_os_image_version}"
   }
 
   storage_os_disk {
@@ -54,14 +54,14 @@ resource "azurerm_virtual_machine" "node" {
 
   os_profile {
     computer_name  = "node${count.index}"
-    admin_username = "${var.admin_user}"
-    admin_password = "${var.admin_password}"
+    admin_username = "${var.openshift_vm_admin_user}"
+    admin_password = "${var.openshift_vm_admin_password}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/${var.admin_user}/.ssh/authorized_keys"
+      path = "/home/${var.openshift_vm_admin_user}/.ssh/authorized_keys"
       key_data = "${file("${path.module}/../certs/openshift.pub")}"
     }
   }

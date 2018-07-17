@@ -44,13 +44,13 @@ resource "azurerm_virtual_machine" "bastion" {
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
   network_interface_ids = ["${azurerm_network_interface.bastion.id}"]
-  vm_size               = "${var.bastion_vm_size}"
+  vm_size               = "${var.openshift_bastion_vm_size}"
 
   storage_image_reference {
-    publisher = "${var.os_image_publisher}"
-    offer     = "${var.os_image_offer}"
-    sku       = "${var.os_image_sku}"
-    version   = "${var.os_image_version}"
+    publisher = "${var.openshift_os_image_publisher}"
+    offer     = "${var.openshift_os_image_offer}"
+    sku       = "${var.openshift_os_image_sku}"
+    version   = "${var.openshift_os_image_version}"
   }
 
   storage_os_disk {
@@ -65,14 +65,14 @@ resource "azurerm_virtual_machine" "bastion" {
 
   os_profile {
     computer_name  = "bastion"
-    admin_username = "${var.admin_user}"
-    admin_password = "${var.admin_password}"
+    admin_username = "${var.openshift_vm_admin_user}"
+    admin_password = "${var.openshift_vm_admin_password}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/${var.admin_user}/.ssh/authorized_keys"
+      path = "/home/${var.openshift_vm_admin_user}/.ssh/authorized_keys"
       key_data = "${file("${path.module}/../certs/bastion.pub")}"
     }
   }
@@ -83,7 +83,7 @@ resource "azurerm_virtual_machine" "bastion" {
     connection {
       type        = "ssh"
       host        = "${azurerm_public_ip.bastion.ip_address}"
-      user        = "${var.admin_user}"
+      user        = "${var.openshift_vm_admin_user}"
       private_key = "${file("${path.module}/../certs/bastion.key")}"
     }
   }

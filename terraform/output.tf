@@ -11,13 +11,13 @@ output "service_public_ip" {
 }
 
 output "node_count" {
-  value = "${var.node_count}"
+  value = "${var.openshift_node_count}"
 }
 
 output "admin_user" {
-  value = "${var.admin_user}"
+  value = "${var.openshift_vm_admin_user}"
 }
 
 output "master_domain" {
-  value = "${var.master_domain}"
+  value = "${var.openshift_master_domain}"
 }

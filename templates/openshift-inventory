@@ -2,8 +2,6 @@
 masters
 nodes
 etcd
-new_nodes
-new_masters
 
 [OSEv3:vars]
 ansible_ssh_user=###ADMIN_USER###
@@ -11,40 +9,55 @@ ansible_become=true
 
 openshift_deployment_type=origin
 
-openshift_disable_check=disk_availability,memory_availability
+openshift_disable_check=memory_availability,disk_availability,docker_image_availability
+openshift_enable_unsupported_configurations=true
 openshift_override_hostname_check=true
 
-#openshift_master_named_certificates=[{"certfile": "/home/nacho/ssl/config/live/openshift.gq/fullchain.pem", "keyfile": "/home/nacho/ssl/config/live/openshift.gq/privkey.pem"}]
-#openshift_master_overwrite_named_certificates=true
+openshift_release=v3.9
 
-openshift_hosted_router_replicas=3
-openshift_hosted_registry_replicas=3
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+
+openshift_master_htpasswd_users={'admin': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1', 'dev1': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1', 'dev2': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1', 'dev3': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1', 'dev4': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1'}
+
+openshift_master_cluster_method=native
+
+openshift_master_cluster_hostname=###MASTER_DOMAIN###
+openshift_master_cluster_public_hostname=###MASTER_DOMAIN###
+openshift_master_default_subdomain=###MASTER_DOMAIN###
+
+osm_default_node_selector='role=apps'
+openshift_hosted_infra_selector='role=infra'
 openshift_router_selector='role=infra'
 openshift_registry_selector='role=infra'
-osm_default_node_selector="role=app"
 
-osm_cluster_network_cidr="10.128.0.0/14"
-osm_host_subnet_length=9
-openshift_portal_net="172.30.0.0/16"
-openshift_use_dnsmasq=true
+openshift_metrics_install_metrics=true
+openshift_metrics_cassandra_nodeselector={"role":"infra"}
+openshift_metrics_heapster_nodeselector={"role":"infra"}
+openshift_metrics_hawkular_nodeselector={"role":"infra"}
+
+openshift_logging_install_logging=true
+openshift_logging_kibana_nodeselector={"role":"infra"}
+openshift_logging_fluentd_nodeselector={"logging":"true"}
+openshift_logging_curator_nodeselector={"role":"infra"}
+openshift_logging_es_nodeselector={"role":"infra"}
+
+openshift_enable_service_catalog=true
+template_service_broker_install=true
+ansible_service_broker_install=false
+template_service_broker_selector={"role":"infra"}
+
+openshift_node_kubelet_args={'pods-per-core': ['50'], 'max-pods': ['1000'], 'image-gc-high-threshold': ['85'], 'image-gc-low-threshold': ['80']}
+
+openshift_clock_enabled=true
 
 [masters]
-master0 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
-master1 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
-master2 openshift_node_labels="{'role': 'master'}" openshift_public_hostname=###MASTER_DOMAIN###
+master[0:2]
 
 [etcd]
-master0
-master1
-master2
-
-[new_nodes]
-[new_masters]
+master[0:2]
 
 [nodes]
-master0 openshift_hostname=master0 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
-master1 openshift_hostname=master1 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
-master2 openshift_hostname=master2 openshift_node_labels="{'role':'master','zone':'default','logging':'true'}" openshift_schedulable=false
-infra0 openshift_hostname=infra0 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
-infra1 openshift_hostname=infra1 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
-infra2 openshift_hostname=infra2 openshift_node_labels="{'role': 'infra', 'zone': 'default','logging':'true'}"
+master[0:2] openshift_node_labels="{'role': 'master', 'logging': 'true'}"
+infra[0:1] openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
