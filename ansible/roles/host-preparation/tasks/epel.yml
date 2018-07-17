@@ -1,7 +1,7 @@
 ---
 - name: Install EPEL repo
   yum:
-    name: "epel_release"
+    name: "epel-release"
     state: present
 
 - name: Disable EPEL repo globally
