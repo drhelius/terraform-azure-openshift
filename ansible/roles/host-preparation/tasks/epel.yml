@@ -9,4 +9,3 @@
     path: "{{ epel_repofile_path }}"
     regexp: "^enabled=1"
     replace: "enabled=0"
-  when: not epel_repofile_result.stat.exists
