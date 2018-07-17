@@ -66,7 +66,6 @@ resource "azurerm_virtual_machine" "bastion" {
   os_profile {
     computer_name  = "bastion"
     admin_username = "${var.openshift_vm_admin_user}"
-    admin_password = "${var.openshift_vm_admin_password}"
   }
 
   os_profile_linux_config {

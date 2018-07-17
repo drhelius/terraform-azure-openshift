@@ -37,7 +37,7 @@ cp -f ../terraform-azure-openshift/templates/openshift-inventory openshift-inven
 
 INDEX=0
 while [ $INDEX -lt $NODE_COUNT ]; do
-  printf "node$INDEX openshift_node_labels=\"{'role':'apps', 'logging':'true'}\"\n" >> openshift-inventory
+  printf "node$INDEX openshift_hostname=ocp-app-$INDEX openshift_node_labels=\"{'role':'app', 'logging':'true'}\"\n" >> openshift-inventory
   let INDEX=INDEX+1
 done
 

@@ -8,6 +8,7 @@ yum_packages:
   - git
   - net-tools
   - bind-utils
+  - yum-utils
   - iptables-services
   - bridge-utils
   - bash-completion
@@ -19,6 +20,9 @@ yum_packages:
   - pyOpenSSL
   - at
   - deltarpm
+  - tmux
+  - vim
+
 
 python_packages:
   - virtualenv

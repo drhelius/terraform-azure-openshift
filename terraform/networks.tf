@@ -20,7 +20,7 @@ resource "azurerm_subnet" "node" {
 }
 
 resource "azurerm_subnet" "infra" {
-  name                 = "openshift-infrastructure-subnet"
+  name                 = "openshift-infra-subnet"
   resource_group_name  = "${azurerm_resource_group.openshift.name}"
   virtual_network_name = "${azurerm_virtual_network.openshift.name}"
   address_prefix       = "10.0.2.0/24"

@@ -1,19 +1,19 @@
 resource "azurerm_public_ip" "infra" {
-  name                         = "openshift-infrastructure-public-ip"
+  name                         = "openshift-infra-public-ip"
   location                     = "${var.azure_location}"
   resource_group_name          = "${azurerm_resource_group.openshift.name}"
   public_ip_address_allocation = "static"
 }
 
 resource "azurerm_availability_set" "infra" {
-  name                = "openshift-infrastructure-availability-set"
+  name                = "openshift-infra-availability-set"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
   managed             = true
 }
 
 resource "azurerm_lb" "infra" {
-  name                = "openshift-infrastructure-load-balancer"
+  name                = "openshift-infra-load-balancer"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
 
@@ -25,7 +25,7 @@ resource "azurerm_lb" "infra" {
 }
 
 resource "azurerm_lb_backend_address_pool" "infra" {
-  name                = "openshift-infrastructure-address-pool"
+  name                = "openshift-infra-address-pool"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
   loadbalancer_id     = "${azurerm_lb.infra.id}"
 }
@@ -53,7 +53,7 @@ resource "azurerm_lb_rule" "infra-443-443" {
 }
 
 resource "azurerm_network_security_group" "infra" {
-  name                = "openshift-infrastructure-security-group"
+  name                = "openshift-infra-security-group"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
 }
@@ -88,7 +88,7 @@ resource "azurerm_network_security_rule" "infra-https" {
 
 resource "azurerm_network_interface" "infra" {
   count                     = 2
-  name                      = "openshift-infrastructure-nic-${count.index}"
+  name                      = "openshift-infra-nic-${count.index}"
   location                  = "${var.azure_location}"
   resource_group_name       = "${azurerm_resource_group.openshift.name}"
   network_security_group_id = "${azurerm_network_security_group.infra.id}"
@@ -103,7 +103,7 @@ resource "azurerm_network_interface" "infra" {
 
 resource "azurerm_virtual_machine" "infra" {
   count                 = 2
-  name                  = "openshift-infrastructure-vm-${count.index}"
+  name                  = "openshift-infra-vm-${count.index}"
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
   network_interface_ids = ["${element(azurerm_network_interface.infra.*.id, count.index)}"]
@@ -118,14 +118,14 @@ resource "azurerm_virtual_machine" "infra" {
   }
 
   storage_os_disk {
-    name              = "openshift-infrastructure-vm-os-disk-${count.index}"
+    name              = "openshift-infra-vm-os-disk-${count.index}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "openshift-infrastructure-vm-data-disk-${count.index}"
+    name              = "openshift-infra-vm-data-disk-${count.index}"
     create_option     = "Empty"
     managed_disk_type = "Standard_LRS"
     lun               = 0
@@ -138,7 +138,6 @@ resource "azurerm_virtual_machine" "infra" {
   os_profile {
     computer_name  = "infra${count.index}"
     admin_username = "${var.openshift_vm_admin_user}"
-    admin_password = "${var.openshift_vm_admin_password}"
   }
 
   os_profile_linux_config {

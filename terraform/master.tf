@@ -113,7 +113,6 @@ resource "azurerm_virtual_machine" "master" {
   os_profile {
     computer_name  = "master${count.index}"
     admin_username = "${var.openshift_vm_admin_user}"
-    admin_password = "${var.openshift_vm_admin_password}"
   }
 
   os_profile_linux_config {
