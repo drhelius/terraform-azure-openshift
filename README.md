@@ -18,17 +18,16 @@ Modify the variables in ```bootstrap.tfvars``` to change the name of the resourc
 azure_location = "East US"
 azure_resource_group_name = "openshift"
 openshift_node_count = "2"
-openshift_node_vm_size = "Standard_A2m_v2"
-openshift_master_vm_size = "Standard_A2m_v2"
-openshift_infra_vm_size = "Standard_A2m_v2"
-openshift_bastion_vm_size = "Standard_A2"
+openshift_node_vm_size = "Standard_B2s"
+openshift_master_vm_size = "Standard_B2s"
+openshift_infra_vm_size = "Standard_B2ms"
+openshift_bastion_vm_size = "Standard_B2ms"
 openshift_master_domain = "openshift.mydomain.com"
 openshift_os_image_publisher = "OpenLogic"
 openshift_os_image_offer = "CentOS"
 openshift_os_image_sku = "7.5"
 openshift_os_image_version = "latest"
 openshift_vm_admin_user = "cloud-user"
-openshift_vm_admin_password = "xxxxxxxx"
 ```
 
 ### Bootstrap
