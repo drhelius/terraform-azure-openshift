@@ -10,9 +10,15 @@ Follow me on Twitter for updates: http://twitter.com/drhelius
 Bootstraping
 ------------
 ### Setup
-Log in into Azure using Azure cli.
+Make sure you have Terraform in your PATH.
 
-Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, the number of App nodes, the size of the VMs, the credentials used in the VMs and the domain or subdomain that will be associated with the OpenShift console:
+Log in into Azure using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest):
+
+```
+az login
+```
+
+Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, number of nodes, size and OS of the VMs and the domain or subdomain that will be associated with OpenShift:
 
 ```
 azure_location = "East US"
