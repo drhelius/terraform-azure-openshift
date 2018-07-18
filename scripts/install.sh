@@ -27,10 +27,10 @@ cd ../..
 if [ ! -d "openshift-ansible" ]; then
     echo "Cloning openshift-ansible Github repo..."
     git clone https://github.com/openshift/openshift-ansible
-    git checkout release-3.9
 fi
 
 cd openshift-ansible
+git checkout release-3.9
 git pull
 cp -f ../terraform-azure-openshift/certs/openshift.key openshift.key
 cp -f ../terraform-azure-openshift/templates/openshift-inventory openshift-inventory
