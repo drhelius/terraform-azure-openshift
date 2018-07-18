@@ -27,7 +27,7 @@ openshift_os_image_publisher = "OpenLogic"
 openshift_os_image_offer = "CentOS"
 openshift_os_image_sku = "7.5"
 openshift_os_image_version = "latest"
-openshift_vm_admin_user = "openshift"
+openshift_vm_admin_user = "cloud-user"
 openshift_vm_admin_password = "xxxxxxxx"
 ```
 
