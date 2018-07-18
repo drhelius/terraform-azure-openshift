@@ -59,8 +59,8 @@ master[0:2]
 master[0:2]
 
 [nodes]
-master0 openshift_hostname=ocp-master-1 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-master1 openshift_hostname=ocp-master-2 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-master2 openshift_hostname=ocp-master-3 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-infra0 openshift_hostname=ocp-infra-1 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
-infra1 openshift_hostname=ocp-infra-2 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
+master0 openshift_hostname=master0 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
+master1 openshift_hostname=master1 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
+master2 openshift_hostname=master2 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
+infra0 openshift_hostname=infra0 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
+infra1 openshift_hostname=infra1 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
