@@ -9,13 +9,6 @@ resource "azurerm_subnet" "master" {
   name                 = "openshift-master-subnet"
   resource_group_name  = "${azurerm_resource_group.openshift.name}"
   virtual_network_name = "${azurerm_virtual_network.openshift.name}"
-  address_prefix       = "10.0.0.0/24"
-}
-
-resource "azurerm_subnet" "node" {
-  name                 = "openshift-node-subnet"
-  resource_group_name  = "${azurerm_resource_group.openshift.name}"
-  virtual_network_name = "${azurerm_virtual_network.openshift.name}"
   address_prefix       = "10.0.1.0/24"
 }
 
@@ -24,6 +17,13 @@ resource "azurerm_subnet" "infra" {
   resource_group_name  = "${azurerm_resource_group.openshift.name}"
   virtual_network_name = "${azurerm_virtual_network.openshift.name}"
   address_prefix       = "10.0.2.0/24"
+}
+
+resource "azurerm_subnet" "node" {
+  name                 = "openshift-node-subnet"
+  resource_group_name  = "${azurerm_resource_group.openshift.name}"
+  virtual_network_name = "${azurerm_virtual_network.openshift.name}"
+  address_prefix       = "10.0.3.0/24"
 }
 
 resource "azurerm_dns_zone" "openshift" {

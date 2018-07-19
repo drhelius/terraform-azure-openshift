@@ -106,7 +106,7 @@ resource "azurerm_virtual_machine" "infra" {
   name                  = "openshift-infra-vm-${count.index + 1}"
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
-  network_interface_ids = ["${element(azurerm_network_interface.infra.*.id, count.index + 1)}"]
+  network_interface_ids = ["${element(azurerm_network_interface.infra.*.id, count.index)}"]
   vm_size               = "${var.openshift_infra_vm_size}"
   availability_set_id   = "${azurerm_availability_set.infra.id}"
 
