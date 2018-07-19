@@ -23,7 +23,7 @@ openshift_master_htpasswd_users={'admin': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1
 
 openshift_master_cluster_method=native
 
-openshift_master_cluster_hostname=master-private-lb.openshift.local
+openshift_master_cluster_hostname=###MASTER_FQDN###
 openshift_master_cluster_public_hostname=###MASTER_DOMAIN###
 openshift_master_default_subdomain=###ROUTER_DOMAIN###
 

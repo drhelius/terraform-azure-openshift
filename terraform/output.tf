@@ -3,7 +3,11 @@ output "bastion_public_ip" {
 }
 
 output "console_public_ip" {
-  value = "${azurerm_public_ip.master-public.ip_address}"
+  value = "${azurerm_public_ip.master.ip_address}"
+}
+
+output "console_public_fqdn" {
+  value = "${azurerm_public_ip.master.fqdn}"
 }
 
 output "router_public_ip" {

@@ -3,6 +3,11 @@ set -e
 
 cd terraform
 
+if [ ! -d ".terraform" ]; then
+    echo "Initializing Terraform..."
+    terraform init
+fi
+
 echo "Synchronizing Terraform state..."
 terraform refresh -var-file=../bootstrap.tfvars
 
@@ -15,7 +20,8 @@ terraform apply openshift.plan
 echo "Getting output variables..."
 BASTION_IP=$(terraform output bastion_public_ip)
 ROUTER_IP=$(terraform output router_public_ip)
-CONSOLE_IP=$(terraform output console_public_ip)
+MASTER_IP=$(terraform output console_public_ip)
+MASTER_FQDN=$(terraform output console_public_fqdn)
 NODE_COUNT=$(terraform output node_count)
 MASTER_COUNT=$(terraform output master_count)
 INFRA_COUNT=$(terraform output infra_count)
@@ -35,9 +41,9 @@ scp -q -o StrictHostKeychecking=no -i certs/bastion.key -r ansible/ templates/ $
 scp -q -o StrictHostKeychecking=no -i certs/bastion.key -r certs/openshift.* $ADMIN_USER@$BASTION_IP:/home/$ADMIN_USER/terraform-azure-openshift/certs
 
 echo "Running install script..."
-ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $MASTER_COUNT $INFRA_COUNT $ADMIN_USER $MASTER_DOMAIN $ROUTER_DOMAIN
+ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $MASTER_COUNT $INFRA_COUNT $ADMIN_USER $MASTER_DOMAIN $ROUTER_DOMAIN $MASTER_FQDN
 
 echo "Finished!!"
-echo "Console: https://$CONSOLE_IP:8443"
+echo "Console: https://$MASTER_IP:8443"
 echo "Bastion: ssh -i certs/bastion.key $ADMIN_USER@$BASTION_IP"
 echo "Router: $ROUTER_IP"

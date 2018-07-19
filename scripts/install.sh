@@ -7,6 +7,7 @@ INFRA_COUNT=$3
 ADMIN_USER=$4
 MASTER_DOMAIN=$5
 ROUTER_DOMAIN=$6
+MASTER_FQDN=$7
 
 cd terraform-azure-openshift
 
@@ -39,6 +40,7 @@ sed -i "s/###INFRA_COUNT###/$INFRA_COUNT/g" openshift-inventory
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" openshift-inventory
 sed -i "s/###MASTER_DOMAIN###/$MASTER_DOMAIN/g" openshift-inventory
 sed -i "s/###ROUTER_DOMAIN###/$ROUTER_DOMAIN/g" openshift-inventory
+sed -i "s/###MASTER_FQDN###/$MASTER_FQDN/g" openshift-inventory
 
 ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/prerequisites.yml
 ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/deploy_cluster.yml

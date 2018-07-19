@@ -1,8 +1,15 @@
-resource "azurerm_public_ip" "master-public" {
+resource "random_string" "master" {
+  length = 16
+  special = false
+  upper = false
+}
+
+resource "azurerm_public_ip" "master" {
   name                         = "openshift-master-public-ip"
   location                     = "${var.azure_location}"
   resource_group_name          = "${azurerm_resource_group.openshift.name}"
   public_ip_address_allocation = "static"
+  domain_name_label            = "ocp-${random_string.master.result}"
   sku                          = "Standard"
 }
 
@@ -21,73 +28,31 @@ resource "azurerm_dns_a_record" "openshift-master-private-load-balancer" {
   records             = ["10.0.1.250"]
 }
 
-resource "azurerm_lb" "master-private" {
-  name                = "openshift-master-private-load-balancer"
+resource "azurerm_lb" "master" {
+  name                = "openshift-master-load-balancer"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
   sku                 = "Standard"
 
   frontend_ip_configuration {
     name                          = "default"
-    private_ip_address            = "10.0.1.250"
-    private_ip_address_allocation = "static"
-    subnet_id                     = "${azurerm_subnet.master.id}"
-  }
-}
-
-resource "azurerm_lb_backend_address_pool" "master-private" {
-  name                = "openshift-master-private-address-pool"
-  resource_group_name = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id     = "${azurerm_lb.master-private.id}"
-}
-
-resource "azurerm_lb_rule" "master-private-8443-8443" {
-  name                    = "master-private-lb-rule-8443-8443"
-  resource_group_name     = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id         = "${azurerm_lb.master-private.id}"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.master-private.id}"
-  probe_id                = "${azurerm_lb_probe.master-private.id}"
-  protocol                       = "tcp"
-  frontend_port                  = 8443
-  backend_port                   = 8443
-  idle_timeout_in_minutes        = 10
-  frontend_ip_configuration_name = "default"
-}
-
-resource "azurerm_lb_probe" "master-private" {
-  name                = "master-private-lb-probe-8443-up"
-  resource_group_name = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id     = "${azurerm_lb.master-private.id}"
-  protocol            = "Https"
-  request_path        = "/healthz"
-  port                = 8443
-}
-
-resource "azurerm_lb" "master-public" {
-  name                = "openshift-master-public-load-balancer"
-  location            = "${var.azure_location}"
-  resource_group_name = "${azurerm_resource_group.openshift.name}"
-  sku                 = "Standard"
-
-  frontend_ip_configuration {
-    name                          = "default"
-    public_ip_address_id          = "${azurerm_public_ip.master-public.id}"
+    public_ip_address_id          = "${azurerm_public_ip.master.id}"
     private_ip_address_allocation = "dynamic"
   }
 }
 
-resource "azurerm_lb_backend_address_pool" "master-public" {
-  name                = "openshift-master-public-address-pool"
+resource "azurerm_lb_backend_address_pool" "master" {
+  name                = "openshift-master-address-pool"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id     = "${azurerm_lb.master-public.id}"
+  loadbalancer_id     = "${azurerm_lb.master.id}"
 }
 
-resource "azurerm_lb_rule" "master-public-8443-8443" {
-  name                    = "master-public-lb-rule-8443-8443"
+resource "azurerm_lb_rule" "master-8443-8443" {
+  name                    = "master-lb-rule-8443-8443"
   resource_group_name     = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id         = "${azurerm_lb.master-public.id}"
-  backend_address_pool_id = "${azurerm_lb_backend_address_pool.master-public.id}"
-  probe_id                = "${azurerm_lb_probe.master-public.id}"
+  loadbalancer_id         = "${azurerm_lb.master.id}"
+  backend_address_pool_id = "${azurerm_lb_backend_address_pool.master.id}"
+  probe_id                = "${azurerm_lb_probe.master.id}"
   protocol                       = "tcp"
   frontend_port                  = 8443
   backend_port                   = 8443
@@ -95,10 +60,10 @@ resource "azurerm_lb_rule" "master-public-8443-8443" {
   frontend_ip_configuration_name = "default"
 }
 
-resource "azurerm_lb_probe" "master-public" {
-  name                = "master-public-lb-probe-8443-up"
+resource "azurerm_lb_probe" "master" {
+  name                = "master-lb-probe-8443-up"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
-  loadbalancer_id     = "${azurerm_lb.master-public.id}"
+  loadbalancer_id     = "${azurerm_lb.master.id}"
   protocol            = "Https"
   request_path        = "/healthz"
   port                = 8443
@@ -135,7 +100,7 @@ resource "azurerm_network_interface" "master" {
     name                                    = "default"
     subnet_id                               = "${azurerm_subnet.master.id}"
     private_ip_address_allocation           = "dynamic"
-    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.master-private.id}", "${azurerm_lb_backend_address_pool.master-public.id}"]
+    load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.master.id}"]
   }
 }
 
