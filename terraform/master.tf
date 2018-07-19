@@ -18,7 +18,7 @@ resource "azurerm_dns_a_record" "openshift-master-private-load-balancer" {
   zone_name           = "${azurerm_dns_zone.openshift.name}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
   ttl                 = 300
-  records             = ["10.0.0.250"]
+  records             = ["10.0.1.250"]
 }
 
 resource "azurerm_lb" "master-private" {
@@ -29,7 +29,7 @@ resource "azurerm_lb" "master-private" {
 
   frontend_ip_configuration {
     name                          = "default"
-    private_ip_address            = "10.0.0.250"
+    private_ip_address            = "10.0.1.250"
     private_ip_address_allocation = "static"
     subnet_id                     = "${azurerm_subnet.master.id}"
   }
