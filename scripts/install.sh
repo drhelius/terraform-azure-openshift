@@ -47,4 +47,7 @@ ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/de
 
 cd ..
 
+rm -rf .kube
+scp -q -r master1.openshift.local:.kube .kube
+
 rm install.sh
