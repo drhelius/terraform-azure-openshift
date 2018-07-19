@@ -53,6 +53,8 @@ In order to SSH into the Bastion host use the key in the ```certs``` folder:
 ssh -i certs/bastion.key cloud-user@BASTION_IP
 ```
 
+The ```oc``` command is configured to be used in the Bastion host.
+
 If something failed during the installation you can run ```bootstrap.sh``` again.
 
 License
