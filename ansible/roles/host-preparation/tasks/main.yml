@@ -8,9 +8,6 @@
 - name: Ensure required packages are installed
   include: yum.yml
 
-- name: Ensure required Python packages are installed
-  include: python.yml
-
 - name: Ensure Docker is properly installed
   include: docker.yml
 
