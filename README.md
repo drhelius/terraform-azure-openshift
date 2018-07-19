@@ -18,17 +18,20 @@ Log in into Azure using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/?
 az login
 ```
 
-Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, number of nodes, size and OS of the VMs and the domain or subdomain that will be associated with OpenShift:
+Modify the variables in ```bootstrap.tfvars``` to change the name of the resource group, number of nodes, size and OS of the VMs and the domains or subdomains that will be associated with OpenShift:
 
 ```
 azure_location = "East US"
 azure_resource_group_name = "openshift"
 openshift_node_count = "2"
+openshift_master_count = "3"
+openshift_infra_count = "2"
 openshift_node_vm_size = "Standard_B2s"
 openshift_master_vm_size = "Standard_B2s"
 openshift_infra_vm_size = "Standard_B2ms"
 openshift_bastion_vm_size = "Standard_B2ms"
 openshift_master_domain = "openshift.mydomain.com"
+openshift_router_domain = "mydomain.com"
 openshift_os_image_publisher = "OpenLogic"
 openshift_os_image_offer = "CentOS"
 openshift_os_image_sku = "7.5"
@@ -42,12 +45,15 @@ Simply run:
 ```
 ./bootstrap.sh
 ```
+
 When finished, you will get the public IPs for the Bastion host and for both the External Load Balancer and the Router Load Balancer.
 
 In order to SSH into the Bastion host use the key in the ```certs``` folder:
 ```
 ssh -i certs/bastion.key cloud-user@BASTION_IP
 ```
+
+If something failed during the installation you can run ```bootstrap.sh``` again.
 
 License
 -------
