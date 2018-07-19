@@ -43,7 +43,11 @@ scp -q -o StrictHostKeychecking=no -i certs/bastion.key -r certs/openshift.* $AD
 echo "Running install script..."
 ssh -t -o StrictHostKeychecking=no -i certs/bastion.key $ADMIN_USER@$BASTION_IP ./install.sh $NODE_COUNT $MASTER_COUNT $INFRA_COUNT $ADMIN_USER $MASTER_DOMAIN $ROUTER_DOMAIN $MASTER_FQDN
 
-echo "Finished!!"
-echo "Console: https://$MASTER_IP:8443"
+echo "-----------------------------------------"
+echo "-----------------------------------------"
+echo "Master Load Balancer: $MASTER_IP"
+echo "Router Load Balancer: $ROUTER_IP"
+echo "Console: https://$MASTER_DOMAIN:8443"
 echo "Bastion: ssh -i certs/bastion.key $ADMIN_USER@$BASTION_IP"
-echo "Router: $ROUTER_IP"
+echo "-----------------------------------------"
+echo "-----------------------------------------"
