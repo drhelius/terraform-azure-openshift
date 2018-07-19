@@ -23,9 +23,9 @@ openshift_master_htpasswd_users={'admin': '$apr1$xIIiRgPb$wt/TcaVXlmuhi72AOuwJN1
 
 openshift_master_cluster_method=native
 
-openshift_master_cluster_hostname=###MASTER_DOMAIN###
+openshift_master_cluster_hostname=master-private-lb.openshift.local
 openshift_master_cluster_public_hostname=###MASTER_DOMAIN###
-openshift_master_default_subdomain=###MASTER_DOMAIN###
+openshift_master_default_subdomain=###ROUTER_DOMAIN###
 
 osm_default_node_selector='role=app'
 openshift_hosted_infra_selector='role=infra'
@@ -53,14 +53,12 @@ openshift_node_kubelet_args={'pods-per-core': ['50'], 'max-pods': ['1000'], 'ima
 openshift_clock_enabled=true
 
 [masters]
-master[0:2]
+master[1:###MASTER_COUNT###].openshift.local
 
 [etcd]
-master[0:2]
+master[1:###MASTER_COUNT###].openshift.local
 
 [nodes]
-master0 openshift_hostname=master0 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-master1 openshift_hostname=master1 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-master2 openshift_hostname=master2 openshift_node_labels="{'role': 'master', 'logging': 'true'}"
-infra0 openshift_hostname=infra0 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
-infra1 openshift_hostname=infra1 openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
+master[1:###MASTER_COUNT###].openshift.local openshift_node_labels="{'role': 'master', 'logging': 'true'}"
+infra[1:###INFRA_COUNT###].openshift.local openshift_node_labels="{'role': 'infra', 'logging': 'true'}"
+node[1:###NODE_COUNT###].openshift.local openshift_node_labels="{'role': 'app', 'logging': 'true'}"

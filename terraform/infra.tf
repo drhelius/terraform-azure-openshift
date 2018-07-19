@@ -87,8 +87,8 @@ resource "azurerm_network_security_rule" "infra-https" {
 }
 
 resource "azurerm_network_interface" "infra" {
-  count                     = 2
-  name                      = "openshift-infra-nic-${count.index}"
+  count                     = "${var.openshift_infra_count}"
+  name                      = "openshift-infra-nic-${count.index + 1}"
   location                  = "${var.azure_location}"
   resource_group_name       = "${azurerm_resource_group.openshift.name}"
   network_security_group_id = "${azurerm_network_security_group.infra.id}"
@@ -102,11 +102,11 @@ resource "azurerm_network_interface" "infra" {
 }
 
 resource "azurerm_virtual_machine" "infra" {
-  count                 = 2
-  name                  = "openshift-infra-vm-${count.index}"
+  count                 = "${var.openshift_infra_count}"
+  name                  = "openshift-infra-vm-${count.index + 1}"
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
-  network_interface_ids = ["${element(azurerm_network_interface.infra.*.id, count.index)}"]
+  network_interface_ids = ["${element(azurerm_network_interface.infra.*.id, count.index + 1)}"]
   vm_size               = "${var.openshift_infra_vm_size}"
   availability_set_id   = "${azurerm_availability_set.infra.id}"
 
@@ -118,14 +118,14 @@ resource "azurerm_virtual_machine" "infra" {
   }
 
   storage_os_disk {
-    name              = "openshift-infra-vm-os-disk-${count.index}"
+    name              = "openshift-infra-vm-os-disk-${count.index + 1}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "openshift-infra-vm-data-disk-${count.index}"
+    name              = "openshift-infra-vm-data-disk-${count.index + 1}"
     create_option     = "Empty"
     managed_disk_type = "Standard_LRS"
     lun               = 0
@@ -136,7 +136,7 @@ resource "azurerm_virtual_machine" "infra" {
   delete_data_disks_on_termination = true
 
   os_profile {
-    computer_name  = "infra${count.index}"
+    computer_name  = "infra${count.index + 1}"
     admin_username = "${var.openshift_vm_admin_user}"
   }
 

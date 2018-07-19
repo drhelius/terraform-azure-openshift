@@ -25,3 +25,10 @@ resource "azurerm_subnet" "infra" {
   virtual_network_name = "${azurerm_virtual_network.openshift.name}"
   address_prefix       = "10.0.2.0/24"
 }
+
+resource "azurerm_dns_zone" "openshift" {
+  name                              = "openshift.local"
+  resource_group_name               = "${azurerm_resource_group.openshift.name}"
+  zone_type                         = "Private"
+  registration_virtual_network_ids  = ["${azurerm_virtual_network.openshift.id}"]
+}

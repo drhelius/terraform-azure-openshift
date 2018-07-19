@@ -1,6 +1,6 @@
 resource "azurerm_network_interface" "node" {
   count               = "${var.openshift_node_count}"
-  name                = "openshift-node-nic-${count.index}"
+  name                = "openshift-node-nic-${count.index + 1}"
   location            = "${var.azure_location}"
   resource_group_name = "${azurerm_resource_group.openshift.name}"
 
@@ -13,7 +13,7 @@ resource "azurerm_network_interface" "node" {
 
 resource "azurerm_storage_container" "node" {
   count                 = "${var.openshift_node_count}"
-  name                  = "node-${count.index}"
+  name                  = "node-${count.index + 1}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
   storage_account_name  = "${azurerm_storage_account.openshift.name}"
   container_access_type = "private"
@@ -21,10 +21,10 @@ resource "azurerm_storage_container" "node" {
 
 resource "azurerm_virtual_machine" "node" {
   count                 = "${var.openshift_node_count}"
-  name                  = "openshift-node-vm-${count.index}"
+  name                  = "openshift-node-vm-${count.index + 1}"
   location              = "${var.azure_location}"
   resource_group_name   = "${azurerm_resource_group.openshift.name}"
-  network_interface_ids = ["${element(azurerm_network_interface.node.*.id, count.index)}"]
+  network_interface_ids = ["${element(azurerm_network_interface.node.*.id, count.index + 1)}"]
   vm_size               = "${var.openshift_node_vm_size}"
 
   storage_image_reference {
@@ -35,14 +35,14 @@ resource "azurerm_virtual_machine" "node" {
   }
 
   storage_os_disk {
-    name              = "openshift-node-vm-os-disk-${count.index}"
+    name              = "openshift-node-vm-os-disk-${count.index + 1}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "openshift-node-vm-data-disk-${count.index}"
+    name              = "openshift-node-vm-data-disk-${count.index + 1}"
     create_option     = "Empty"
     managed_disk_type = "Standard_LRS"
     lun               = 0
@@ -53,7 +53,7 @@ resource "azurerm_virtual_machine" "node" {
   delete_data_disks_on_termination = true
 
   os_profile {
-    computer_name  = "node${count.index}"
+    computer_name  = "node${count.index + 1}"
     admin_username = "${var.openshift_vm_admin_user}"
   }
 

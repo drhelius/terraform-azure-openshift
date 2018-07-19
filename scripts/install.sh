@@ -2,22 +2,20 @@
 set -e
 
 NODE_COUNT=$1
-ADMIN_USER=$2
-MASTER_DOMAIN=$3
-
-if [ ! -d "terraform-azure-openshift" ]; then
-    echo "Cloning terraform-azure-openshift Github repo..."
-    git clone https://github.com/drhelius/terraform-azure-openshift
-fi
+MASTER_COUNT=$2
+INFRA_COUNT=$3
+ADMIN_USER=$4
+MASTER_DOMAIN=$5
+ROUTER_DOMAIN=$6
 
 cd terraform-azure-openshift
-git pull
 
 chmod 600 certs/*
 cp -f certs/openshift.key ansible/openshift.key
 cp -f templates/host-preparation-inventory ansible/inventory/hosts
-NODE_MAX_INDEX=$((NODE_COUNT-1))
-sed -i "s/###NODE_COUNT###/$NODE_MAX_INDEX/g" ansible/inventory/hosts
+sed -i "s/###NODE_COUNT###/$NODE_COUNT/g" ansible/inventory/hosts
+sed -i "s/###MASTER_COUNT###/$MASTER_COUNT/g" ansible/inventory/hosts
+sed -i "s/###INFRA_COUNT###/$INFRA_COUNT/g" ansible/inventory/hosts
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" ansible/inventory/hosts
 
 cd ansible
@@ -35,14 +33,13 @@ git pull
 cp -f ../terraform-azure-openshift/certs/openshift.key openshift.key
 cp -f ../terraform-azure-openshift/templates/openshift-inventory openshift-inventory
 
-INDEX=0
-while [ $INDEX -lt $NODE_COUNT ]; do
-  printf "node$INDEX openshift_hostname=node$INDEX openshift_node_labels=\"{'role':'app', 'logging':'true'}\"\n" >> openshift-inventory
-  let INDEX=INDEX+1
-done
-
+sed -i "s/###NODE_COUNT###/$NODE_COUNT/g" openshift-inventory
+sed -i "s/###MASTER_COUNT###/$MASTER_COUNT/g" openshift-inventory
+sed -i "s/###INFRA_COUNT###/$INFRA_COUNT/g" openshift-inventory
 sed -i "s/###ADMIN_USER###/$ADMIN_USER/g" openshift-inventory
 sed -i "s/###MASTER_DOMAIN###/$MASTER_DOMAIN/g" openshift-inventory
+sed -i "s/###ROUTER_DOMAIN###/$ROUTER_DOMAIN/g" openshift-inventory
+
 ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/prerequisites.yml
 ansible-playbook --private-key=openshift.key -i openshift-inventory playbooks/deploy_cluster.yml
 
