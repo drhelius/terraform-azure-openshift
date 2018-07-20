@@ -1,0 +1,14 @@
+---
+  
+  - name: Ensure network service is restarted
+    service:
+      name: network
+      state: restarted
+
+
+  - name: Ensure Docker service is enabled and restarted
+    service:
+      name: docker
+      enabled: yes
+      state: restarted
+
