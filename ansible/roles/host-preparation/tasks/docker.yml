@@ -47,9 +47,4 @@
 - name: Ensure Docker is using the right storage device
   shell: "docker-storage-setup"
   changed_when: false
-
-- name: Ensure Docker service is enabled and restarted
-  service:
-    name: docker
-    enabled: yes
-    state: restarted
+  notify: Ensure Docker service is enabled and restarted

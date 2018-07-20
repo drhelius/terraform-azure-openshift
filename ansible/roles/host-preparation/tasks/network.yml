@@ -4,8 +4,4 @@
     path: /etc/sysconfig/network-scripts/ifcfg-eth0
     regexp: '^NM_CONTROLLED='
     line: 'NM_CONTROLLED=yes'
-
-- name: Ensure network service is restarted
-  service:
-    name: network
-    state: restarted
+  notify: Ensure network service is restarted
