@@ -39,6 +39,8 @@ openshift_os_image_version = "latest"
 openshift_vm_admin_user = "cloud-user"
 ```
 
+You can tweak the OpenShift inventory file, it's [here](templates/openshift-inventory).
+
 ### Bootstrap
 
 Simply run:
